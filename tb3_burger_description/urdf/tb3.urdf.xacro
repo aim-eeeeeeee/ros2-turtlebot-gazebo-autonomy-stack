@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot name="tb3_burger" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Wrap the upstream TurtleBot3 Burger description.
+       All meshes, joints, and sensors come from turtlebot3_description.
+       Add overrides below this include as needed. -->
+  <xacro:include filename="$(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro"/>
+</robot>
