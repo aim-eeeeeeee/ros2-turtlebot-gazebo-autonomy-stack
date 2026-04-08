@@ -7,7 +7,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('tb3_burger_description')
-    urdf_file = os.path.join(pkg_share, 'urdf', 'tb3_burger.urdf.xacro')
+    urdf_file = os.path.join(pkg_share, 'urdf', 'tb3.urdf.xacro')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
