@@ -48,6 +48,6 @@ def generate_launch_description():
             executable='obstacle_stop',
             name='obstacle_stop',
             output='screen',
-            parameters=[{'stop_distance': 0.2, 'linear_speed': 0.15, 'angular_speed': 0.5}]
+            parameters=[{'stop_distance': 0.35, 'linear_speed': 0.15, 'angular_speed': 0.5}]
         )
     ])
