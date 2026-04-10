@@ -21,6 +21,7 @@ def generate_launch_description():
         DeclareLaunchArgument('x_pose', default_value = '0.0'),
         DeclareLaunchArgument('y_pose', default_value = '0.0'),
         DeclareLaunchArgument('open_rviz', default_value = 'true'),
+        DeclareLaunchArgument('obstacle_stop', default_value = 'true'),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -37,7 +38,16 @@ def generate_launch_description():
             package='rviz2',
             executable='rviz2',
             name='rviz2',
-            output= 'screen',
+            output='screen',
             arguments=['-d', os.path.join(get_package_share_directory('tb3_burger_bringup'), 'rviz', 'sim.rviz')]
+        ),
+
+        Node(
+            condition=IfCondition(LaunchConfiguration('obstacle_stop')),
+            package='tb3_burger_motion',
+            executable='obstacle_stop',
+            name='obstacle_stop',
+            output='screen',
+            parameters=[{'stop_distance': 0.2, 'linear_speed': 0.15, 'angular_speed': 0.5}]
         )
     ])
