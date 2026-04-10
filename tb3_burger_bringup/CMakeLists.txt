@@ -4,7 +4,7 @@ project(tb3_burger_bringup)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY launch rvis
+  DIRECTORY launch rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
