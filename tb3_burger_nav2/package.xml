@@ -19,5 +19,7 @@
   <exec_depend>nav2_lifecycle_manager</exec_depend>
   <exec_depend>slam_toolbox</exec_depend>
 
-  <ament_cmake>ament_cmake</ament_cmake>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
