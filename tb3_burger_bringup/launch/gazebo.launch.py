@@ -13,9 +13,14 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     turtlebot3_gazebo = get_package_share_directory('turtlebot3_gazebo')
+
     nav2_params_file = os.path.join(
         get_package_share_directory('tb3_burger_nav2'),
         'config', 'nav2_params.yaml'
+    )
+    slam_params_file = os.path.join(
+        get_package_share_directory('tb3_burger_slam'),
+        'config', 'slam_params.yaml'
     )
 
     return LaunchDescription([
@@ -27,6 +32,7 @@ def generate_launch_description():
         DeclareLaunchArgument('open_rviz', default_value = 'false'),
         DeclareLaunchArgument('obstacle_stop', default_value = 'false'),
         DeclareLaunchArgument('use_nav2', default_value = 'false'),
+        DeclareLaunchArgument('slam_params_file', default_value = slam_params_file),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -82,12 +88,13 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(
-                    get_package_share_directory('slam_toolbox'),
-                    'launch', 'online_async_launch.py'
+                    get_package_share_directory('tb3_burger_slam'),
+                    'launch', 'slam.launch.py'
                 )
             ),
             launch_arguments={
-                'use_sim_time': LaunchConfiguration('use_sim_time')
+                'use_sim_time':     LaunchConfiguration('use_sim_time'),
+                'slam_params_file': LaunchConfiguration('slam_params_file'),
             }.items(),
             condition=IfCondition(LaunchConfiguration('use_nav2')),
         ),
