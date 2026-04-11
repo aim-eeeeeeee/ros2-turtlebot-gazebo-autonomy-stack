@@ -13,6 +13,10 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     turtlebot3_gazebo = get_package_share_directory('turtlebot3_gazebo')
+    nav2_params_file = os.path.join(
+        get_package_share_directory('tb3_burger_nav2'),
+        'config', 'nav2_params.yaml'
+    )
 
     return LaunchDescription([
         SetEnvironmentVariable('TURTLEBOT3_MODEL', 'burger'),
@@ -20,8 +24,9 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value = 'true'),
         DeclareLaunchArgument('x_pose', default_value = '0.0'),
         DeclareLaunchArgument('y_pose', default_value = '0.0'),
-        DeclareLaunchArgument('open_rviz', default_value = 'true'),
-        DeclareLaunchArgument('obstacle_stop', default_value = 'true'),
+        DeclareLaunchArgument('open_rviz', default_value = 'false'),
+        DeclareLaunchArgument('obstacle_stop', default_value = 'false'),
+        DeclareLaunchArgument('use_nav2', default_value = 'false'),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -33,21 +38,57 @@ def generate_launch_description():
             }.items(),
         ),
 
+        # RViz node (use when use_nav2:=true)
         Node(
             condition=IfCondition(LaunchConfiguration('open_rviz')),
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
-            arguments=['-d', os.path.join(get_package_share_directory('tb3_burger_bringup'), 'rviz', 'sim.rviz')]
+            arguments=['-d', os.path.join(
+                get_package_share_directory('tb3_burger_bringup'),
+                'rviz', 'sim.rviz'
+                )
+            ],
+            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
         ),
 
-        Node(
-            condition=IfCondition(LaunchConfiguration('obstacle_stop')),
-            package='tb3_burger_motion',
-            executable='obstacle_stop',
-            name='obstacle_stop',
-            output='screen',
-            parameters=[{'stop_distance': 0.35, 'linear_speed': 0.15, 'angular_speed': 0.5}]
-        )
+        # Robot motion node (use when use_nav2:=false)
+        # Node(
+        #     condition=IfCondition(LaunchConfiguration('obstacle_stop')),
+        #     package='tb3_burger_motion',
+        #     executable='obstacle_stop',
+        #     name='obstacle_stop',
+        #     output='screen',
+        #     parameters=[{'stop_distance': 0.2, 'linear_speed': 0.15, 'angular_speed': 0.5}]
+        # )
+
+        # Nav2 node (use when use_nav2:=true)
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory('nav2_bringup'),
+                    'launch', 'navigation_launch.py'
+                )
+            ),
+            launch_arguments={
+                'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'params_file':  nav2_params_file,
+            }.items(),
+            condition=IfCondition(LaunchConfiguration('use_nav2')),
+        ),
+    
+        # SLAM node (use when use_nav2:=true)
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(
+                    get_package_share_directory('slam_toolbox'),
+                    'launch', 'online_async_launch.py'
+                )
+            ),
+            launch_arguments={
+                'use_sim_time': LaunchConfiguration('use_sim_time')
+            }.items(),
+            condition=IfCondition(LaunchConfiguration('use_nav2')),
+        ),
     ])
