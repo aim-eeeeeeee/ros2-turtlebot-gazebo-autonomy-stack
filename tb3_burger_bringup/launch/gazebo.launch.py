@@ -36,7 +36,7 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(turtlebot3_gazebo, 'launch', 'turtblebot3_empty_world.launch.py') # turtlebot3_world.launch.py
+                os.path.join(turtlebot3_gazebo, 'launch', 'turtlebot3_world.launch.py')
             ),
             launch_arguments={
                 'x_pose': LaunchConfiguration('x_pose'),
