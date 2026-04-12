@@ -29,9 +29,10 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value = 'true'),
         DeclareLaunchArgument('x_pose', default_value = '-2.0'),
         DeclareLaunchArgument('y_pose', default_value = '-0.5'),
-        DeclareLaunchArgument('open_rviz', default_value = 'flase'),
+        DeclareLaunchArgument('open_rviz', default_value = 'false'),
         DeclareLaunchArgument('obstacle_stop', default_value = 'false'),
         DeclareLaunchArgument('use_nav2', default_value = 'false'),
+        DeclareLaunchArgument('use_slam', default_value = 'false'),
         DeclareLaunchArgument('slam_params_file', default_value = slam_params_file),
 
         IncludeLaunchDescription(
@@ -84,7 +85,7 @@ def generate_launch_description():
             condition=IfCondition(LaunchConfiguration('use_nav2')),
         ),
     
-        # SLAM node (use when use_nav2:=true)
+        # SLAM node for live mapping.
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(
@@ -96,6 +97,6 @@ def generate_launch_description():
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
                 'slam_params_file': LaunchConfiguration('slam_params_file'),
             }.items(),
-            condition=IfCondition(LaunchConfiguration('use_nav2')),
+            condition=IfCondition(LaunchConfiguration('use_slam')),
         ),
     ])
