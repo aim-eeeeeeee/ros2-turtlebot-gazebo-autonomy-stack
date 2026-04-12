@@ -27,16 +27,16 @@ def generate_launch_description():
         SetEnvironmentVariable('TURTLEBOT3_MODEL', 'burger'),
 
         DeclareLaunchArgument('use_sim_time', default_value = 'true'),
-        DeclareLaunchArgument('x_pose', default_value = '0.0'),
-        DeclareLaunchArgument('y_pose', default_value = '0.0'),
-        DeclareLaunchArgument('open_rviz', default_value = 'false'),
+        DeclareLaunchArgument('x_pose', default_value = '-2.0'),
+        DeclareLaunchArgument('y_pose', default_value = '-.0.5'),
+        DeclareLaunchArgument('open_rviz', default_value = 'true'),
         DeclareLaunchArgument('obstacle_stop', default_value = 'false'),
         DeclareLaunchArgument('use_nav2', default_value = 'false'),
         DeclareLaunchArgument('slam_params_file', default_value = slam_params_file),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(turtlebot3_gazebo, 'launch', 'turtlebot3_world.launch.py')
+                os.path.join(turtlebot3_gazebo, 'launch', 'turtblebot3_empty_world.launch.py') # turtlebot3_world.launch.py
             ),
             launch_arguments={
                 'x_pose': LaunchConfiguration('x_pose'),
@@ -79,7 +79,7 @@ def generate_launch_description():
             ),
             launch_arguments={
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
-                'params_file':  nav2_params_file,
+                'params_file': nav2_params_file,
             }.items(),
             condition=IfCondition(LaunchConfiguration('use_nav2')),
         ),
@@ -93,7 +93,7 @@ def generate_launch_description():
                 )
             ),
             launch_arguments={
-                'use_sim_time':     LaunchConfiguration('use_sim_time'),
+                'use_sim_time': LaunchConfiguration('use_sim_time'),
                 'slam_params_file': LaunchConfiguration('slam_params_file'),
             }.items(),
             condition=IfCondition(LaunchConfiguration('use_nav2')),
