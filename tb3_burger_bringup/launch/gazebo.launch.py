@@ -67,7 +67,13 @@ def generate_launch_description():
             executable='obstacle_stop',
             name='obstacle_stop',
             output='screen',
-            parameters=[{'stop_distance': 0.35, 'linear_speed': 0.15, 'angular_speed': 0.5}]
+            parameters=[{
+                'front_stop_distance': 0.45,
+                'side_clear_distance': 0.35,
+                'linear_speed': 0.15,
+                'turn_angular_speed': 0.8,
+                'backup_speed': -0.08,
+            }]
         ),
 
         # Nav2 node (use when use_nav2:=true)
