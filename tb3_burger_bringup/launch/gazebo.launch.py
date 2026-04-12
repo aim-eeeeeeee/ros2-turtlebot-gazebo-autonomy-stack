@@ -29,7 +29,7 @@ def generate_launch_description():
         DeclareLaunchArgument('use_sim_time', default_value = 'true'),
         DeclareLaunchArgument('x_pose', default_value = '-2.0'),
         DeclareLaunchArgument('y_pose', default_value = '-0.5'),
-        DeclareLaunchArgument('open_rviz', default_value = 'true'),
+        DeclareLaunchArgument('open_rviz', default_value = 'flase'),
         DeclareLaunchArgument('obstacle_stop', default_value = 'false'),
         DeclareLaunchArgument('use_nav2', default_value = 'false'),
         DeclareLaunchArgument('slam_params_file', default_value = slam_params_file),
@@ -60,14 +60,14 @@ def generate_launch_description():
         ),
 
         # Robot motion node (use when use_nav2:=false)
-        # Node(
-        #     condition=IfCondition(LaunchConfiguration('obstacle_stop')),
-        #     package='tb3_burger_motion',
-        #     executable='obstacle_stop',
-        #     name='obstacle_stop',
-        #     output='screen',
-        #     parameters=[{'stop_distance': 0.35, 'linear_speed': 0.15, 'angular_speed': 0.5}]
-        # )
+        Node(
+            condition=IfCondition(LaunchConfiguration('obstacle_stop')),
+            package='tb3_burger_motion',
+            executable='obstacle_stop',
+            name='obstacle_stop',
+            output='screen',
+            parameters=[{'stop_distance': 0.35, 'linear_speed': 0.15, 'angular_speed': 0.5}]
+        ),
 
         # Nav2 node (use when use_nav2:=true)
         IncludeLaunchDescription(
