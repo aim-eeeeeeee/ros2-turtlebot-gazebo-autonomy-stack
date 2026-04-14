@@ -16,6 +16,10 @@ def generate_launch_description():
             'config', 'nav2_params.yaml'
         )
     )
+    slam_params_file = os.path.join(
+        get_package_share_directory('tb3_burger_slam'),
+        'config', 'slam_params.yaml'
+    )
 
     # Gazebo sim — obstacle_stop disabled & Nav2 owns /cmd_vel
     gazebo = IncludeLaunchDescription(
@@ -42,6 +46,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             'use_sim_time': use_sim_time,
+            'slam_params_file': slam_params_file,
         }.items()
     )
 
