@@ -3,6 +3,7 @@ import math
 import rclpy
 from geometry_msgs.msg import TwistStamped
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import LaserScan
 
 
@@ -19,7 +20,7 @@ class ObstacleStop(Node):
         self.obstacle_ahead = False
 
         self.scan_sub = self.create_subscription(
-            LaserScan, '/scan', self.scan_callback, 10)
+            LaserScan, '/scan', self.scan_callback, qos_profile_sensor_data)
         self.cmd_sub = self.create_subscription(
             TwistStamped, '/cmd_vel_raw', self.cmd_callback, 10)
         self.cmd_pub = self.create_publisher(

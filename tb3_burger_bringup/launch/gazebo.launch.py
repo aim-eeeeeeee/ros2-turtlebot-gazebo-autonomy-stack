@@ -70,11 +70,8 @@ def generate_launch_description():
             name='obstacle_stop',
             output='screen',
             parameters=[{
-                'front_stop_distance': 0.45,
-                'side_clear_distance': 0.35,
-                'linear_speed': 0.15,
-                'turn_angular_speed': 0.8,
-                'backup_speed': -0.08,
+                'stop_distance': 0.45,
+                'front_angle_deg': 25.0,
             }]
         ),
 
